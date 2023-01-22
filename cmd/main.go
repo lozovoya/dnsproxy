@@ -16,7 +16,7 @@ type Conf struct {
 
 func main() {
 	var config Conf
-	if err := conf.Load("/dnsproxy/config.yaml", &config); err != nil {
+	if err := conf.Load("config.yaml", &config); err != nil {
 		log.Println(err)
 		os.Exit(1)
 	}
