@@ -31,32 +31,4 @@ Running service in docker:
 ```azure
 docker build --tag=dnsproxy .
 docker run -it -p 853:853 -v "$(pwd)"/config.yaml:/dnsproxy/config.yaml dnsproxy
-```
-
-### Q&A
-
-Q: Imagine this proxy being deployed in an infrastructure. What would be the security
-concerns you would raise?
-
-A: It is necessary to implement a limited number of simultaneous connections to ip addresses, as well as black-list addresses from which there is too much traffic (although it is better to block with ACL on some network filter).
-
-normally all services of a company (i assume this proxy can be used for internal services, not for internet) are located on the ip addresses of some limited range. appearance of ip addresses which are not included into known pool can mean the attempt to direct traffic to the wrong servers
-
-cache service access must be restricted. record swapping can redirect traffic to rogue servers
-
-Q: How would you integrate that solution in a distributed, microservices-oriented and
-containerized architecture?
-
-A: I would use a traffic balancer that redirects requests to a pool of microservices, autoscaling based on service load or response time.
-
-Also when using in a pool, you need to use a single cache for all containers, e.g. based on redis.
-
-CICD must be configured with a canary or blue/green update. 
-
-Q: What other improvements do you think would be interesting to add to the project?
-
-A: export metrics for monitoring
-
-Now the upstream server is selected randomly from the pool, we need to implement a more intelligent selection
-
-creation of a request queue (e.g. based on buffered channels) and a pool of workers for each service. in this way it will be easy to regulate and monitor the maximum number of simultaneous requests that each service handles   
+```  
